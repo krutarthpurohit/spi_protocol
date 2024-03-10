@@ -1,3 +1,5 @@
+/* Authot: Krutarth Purohit */
+
 /* Including required library files */
 #include <stdio.h>
 #include <stdlib.h>
