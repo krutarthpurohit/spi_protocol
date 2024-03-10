@@ -1,4 +1,4 @@
-/* Authot: Krutarth Purohit */
+/* Author: Krutarth Purohit */
 
 /* Including required library files */
 #include <stdio.h>
