@@ -74,8 +74,7 @@ void spi_write_data(uint8_t addr, uint8_t data)     // Function to write data at
     ret = spi_device_polling_transmit(spi, &trans_desc);                // spi_device_polling_transmit starts to transmit entire 'trans_desc' structure.
     if (ret != ESP_OK)
     {
-        ESP_LOGE(SPI_TAG, "SPI read operation failed because SPI bus not initialized\n");
-        ESP_LOGE(SPI_TAG, "Run \"spi_start 1\" to initialize the spi bus");
+        ESP_LOGE(SPI_TAG, "SPI read operation failed\n");
     }
     vTaskDelay(1 / portTICK_PERIOD_MS);                                 // Once data is transferred, we provide the delay and then higher the CS'
     gpio_set_level(PIN_NUM_CS, 1);                                      // After CS' is high, the slave sill get unselected
@@ -97,8 +96,7 @@ void spi_read_data(uint8_t addr)               // Function to read data at given
     ret = spi_device_polling_transmit(spi, &trans_desc);
     if (ret != ESP_OK)
     {
-        ESP_LOGE(SPI_TAG, "SPI write operation failed because SPI bus not initialized\n");
-        ESP_LOGE(SPI_TAG, "Run \"spi_start 1\" command to initialize the spi bus");
+        ESP_LOGE(SPI_TAG, "SPI write operation failed\n");
     }
     printf("Data Read at 0x%x- 0x%x\n\n", addr, trans_desc.rx_data[1]);               // Host can fetch the data that received from the slave from inbuild structure member- rx_data directly
     vTaskDelay(1 / portTICK_PERIOD_MS);
