@@ -70,6 +70,7 @@ void spi_write_data(uint8_t addr, uint8_t data)     // Function to write data at
         .length = 16,                                                   // Length of the address + data is 16 bits
     };
     gpio_set_level(PIN_NUM_CS, 0);                                      // Lower the CS' line to select the slave
+    printf("Writing '0x%x' data at 0x%x\n", data, addr);
     ret = spi_device_polling_transmit(spi, &trans_desc);                // spi_device_polling_transmit starts to transmit entire 'trans_desc' structure.
     if (ret != ESP_OK)
     {
@@ -78,6 +79,7 @@ void spi_write_data(uint8_t addr, uint8_t data)     // Function to write data at
     }
     vTaskDelay(1 / portTICK_PERIOD_MS);                                 // Once data is transferred, we provide the delay and then higher the CS'
     gpio_set_level(PIN_NUM_CS, 1);                                      // After CS' is high, the slave sill get unselected
+    printf("Writing operation completed\n\n");
 }
 
 void spi_read_data(uint8_t addr)               // Function to read data at given address
@@ -98,7 +100,7 @@ void spi_read_data(uint8_t addr)               // Function to read data at given
         ESP_LOGE(SPI_TAG, "SPI write operation failed because SPI bus not initialized\n");
         ESP_LOGE(SPI_TAG, "Run \"spi_start 1\" command to initialize the spi bus");
     }
-    printf("Data Read %d- %d\n", addr, trans_desc.rx_data[1]);              // Host can fetch the data that received from the slave from inbuild structure member- rx_data directly
+    printf("Data Read at 0x%x- 0x%x\n\n", addr, trans_desc.rx_data[1]);               // Host can fetch the data that received from the slave from inbuild structure member- rx_data directly
     vTaskDelay(1 / portTICK_PERIOD_MS);
     gpio_set_level(PIN_NUM_CS, 1);
 }
@@ -112,6 +114,7 @@ int app_main(void)
 
     spi_read_data(addr); // Read the value present at address (0x22)
     spi_write_data(addr, data); // Write the value '0xAA' at the location 0x22
+    spi_read_data(addr);
     
     return 0;
 }
